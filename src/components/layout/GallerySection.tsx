@@ -25,7 +25,8 @@ export function GallerySection() {
                 </h2>
             </div>
 
-            <div className="w-full relative" style={{ height: '600px' }}>
+            {/* Desktop/Tablet: Interactive Gallery */}
+            <div className="hidden md:block w-full relative" style={{ height: '600px' }}>
                 <CircularGallery
                     items={galleryItems}
                     bend={1}
@@ -34,6 +35,23 @@ export function GallerySection() {
                     scrollSpeed={2}
                     scrollEase={0.05}
                 />
+            </div>
+
+            {/* Mobile: Static Grid Fallback */}
+            <div className="md:hidden grid grid-cols-2 gap-4 px-4">
+                {galleryItems.slice(0, 4).map((item, i) => (
+                    <div key={i} className="relative aspect-square rounded-xl overflow-hidden bg-zinc-900 border border-white/10">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                            src={item.image}
+                            alt={item.text}
+                            className="w-full h-full object-cover"
+                        />
+                        <div className="absolute bottom-0 left-0 w-full p-3 bg-gradient-to-t from-black/80 to-transparent">
+                            <span className="text-sm font-medium text-white">{item.text}</span>
+                        </div>
+                    </div>
+                ))}
             </div>
         </section>
     );

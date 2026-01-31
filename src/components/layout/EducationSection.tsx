@@ -33,7 +33,7 @@ export function EducationSection() {
                 <div className="flex flex-col md:flex-row gap-12 items-start">
 
                     {/* Left Column: Title & Intro */}
-                    <div className="md:w-1/3 sticky top-24">
+                    <div className="md:w-1/3 md:sticky md:top-24 h-fit relative z-10">
                         <motion.div
                             initial={{ opacity: 0, x: -20 }}
                             whileInView={{ opacity: 1, x: 0 }}
