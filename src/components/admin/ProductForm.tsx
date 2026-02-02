@@ -17,7 +17,7 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
     const [description, setDescription] = useState(product?.description || '');
     const [category, setCategory] = useState(product?.category || '');
     const [image, setImage] = useState(product?.image || '');
-    const [inStock, setInStock] = useState(product?.in_stock ?? true);
+    const [stockCount, setStockCount] = useState(product?.stock_count?.toString() || '0');
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState('');
@@ -63,25 +63,25 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
         setLoading(true);
         setError('');
 
+        const stock = parseInt(stockCount) || 0;
         const productData = {
             name,
             price: parseFloat(price),
             description,
             category,
             image,
-            in_stock: inStock,
+            stock_count: stock,
+            in_stock: stock > 0,
         };
 
         try {
             if (product) {
-                // Update existing product
                 const { error } = await supabase
                     .from('products')
                     .update(productData)
                     .eq('id', product.id);
                 if (error) throw error;
             } else {
-                // Create new product
                 const { error } = await supabase
                     .from('products')
                     .insert([productData]);
@@ -111,7 +111,7 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-6 space-y-6">
+                <form onSubmit={handleSubmit} className="p-6 space-y-5">
                     {/* Image Upload */}
                     <div>
                         <label className="block text-sm font-medium text-white/70 mb-2">
@@ -158,9 +158,7 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
 
                     {/* Name */}
                     <div>
-                        <label className="block text-sm font-medium text-white/70 mb-2">
-                            Name
-                        </label>
+                        <label className="block text-sm font-medium text-white/70 mb-2">Name</label>
                         <input
                             type="text"
                             value={name}
@@ -171,26 +169,36 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
                         />
                     </div>
 
-                    {/* Price */}
-                    <div>
-                        <label className="block text-sm font-medium text-white/70 mb-2">
-                            Price (Rp)
-                        </label>
-                        <input
-                            type="number"
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
-                            className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-blue-500 transition-colors"
-                            placeholder="e.g., 250000"
-                            required
-                        />
+                    {/* Price & Stock Row */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-white/70 mb-2">Price (Rp)</label>
+                            <input
+                                type="number"
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
+                                className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-blue-500 transition-colors"
+                                placeholder="250000"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-white/70 mb-2">Stock Count</label>
+                            <input
+                                type="number"
+                                value={stockCount}
+                                onChange={(e) => setStockCount(e.target.value)}
+                                className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-blue-500 transition-colors"
+                                placeholder="10"
+                                min="0"
+                                required
+                            />
+                        </div>
                     </div>
 
                     {/* Category */}
                     <div>
-                        <label className="block text-sm font-medium text-white/70 mb-2">
-                            Category
-                        </label>
+                        <label className="block text-sm font-medium text-white/70 mb-2">Category</label>
                         <input
                             type="text"
                             value={category}
@@ -203,29 +211,15 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
 
                     {/* Description */}
                     <div>
-                        <label className="block text-sm font-medium text-white/70 mb-2">
-                            Description
-                        </label>
+                        <label className="block text-sm font-medium text-white/70 mb-2">Description</label>
                         <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             rows={3}
                             className="w-full px-4 py-3 bg-black border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-blue-500 transition-colors resize-none"
-                            placeholder="Short description of the product..."
+                            placeholder="Short description..."
                             required
                         />
-                    </div>
-
-                    {/* In Stock Toggle */}
-                    <div className="flex items-center justify-between p-4 bg-black rounded-xl border border-white/10">
-                        <span className="text-white">In Stock</span>
-                        <button
-                            type="button"
-                            onClick={() => setInStock(!inStock)}
-                            className={`w-12 h-6 rounded-full transition-colors ${inStock ? 'bg-green-500' : 'bg-white/20'}`}
-                        >
-                            <div className={`w-5 h-5 bg-white rounded-full transition-transform ${inStock ? 'translate-x-6' : 'translate-x-0.5'}`} />
-                        </button>
                     </div>
 
                     {error && (
@@ -235,7 +229,7 @@ export function ProductForm({ product, onClose, onSave }: ProductFormProps) {
                     )}
 
                     {/* Actions */}
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 pt-2">
                         <button
                             type="button"
                             onClick={onClose}
