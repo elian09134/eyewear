@@ -12,7 +12,7 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
     const handleBuy = () => {
         // Basic WhatsApp link generator
-        const phoneNumber = '6285175090448'; // Replace with actual number
+        const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '6285175090448';
         const message = `Halo, saya tertarik dengan kacamata ${product.name} seharga Rp ${product.price.toLocaleString('id-ID')}. Apakah stok masih ada?`;
         const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
         window.open(url, '_blank');

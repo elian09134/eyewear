@@ -1,13 +1,23 @@
 "use client";
 
-import { HeroExperience } from '../3d/HeroExperience';
 import { Button } from '../ui/button';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 export function HeroSection() {
     return (
-        <section className="relative h-screen w-full overflow-hidden bg-background">
-            <HeroExperience />
+        <section className="relative h-screen w-full overflow-hidden bg-black">
+            {/* Background Image */}
+            <div className="absolute inset-0 z-0">
+                <Image
+                    src="https://images.unsplash.com/photo-1577803645773-f96470509666?q=80&w=2880&auto=format&fit=crop"
+                    alt="Premium Eyewear"
+                    fill
+                    className="object-cover opacity-60"
+                    priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+            </div>
 
             <div className="container relative z-10 mx-auto flex h-full flex-col justify-center px-4 md:px-6">
                 <motion.div
@@ -29,8 +39,8 @@ export function HeroSection() {
                         <Button size="lg" className="rounded-full bg-white px-8 text-black hover:bg-white/90">
                             Shop Collection
                         </Button>
-                        <Button variant="outline" size="lg" className="rounded-full">
-                            Try Virtual Mirror
+                        <Button variant="outline" size="lg" className="rounded-full border-white/20 bg-white/5 text-white hover:bg-white/10 backdrop-blur-sm">
+                            View Lookbook
                         </Button>
                     </div>
                 </motion.div>
