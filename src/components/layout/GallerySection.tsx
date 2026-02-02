@@ -18,7 +18,7 @@ const galleryItems = [
 
 export function GallerySection() {
     return (
-        <section className="py-24 bg-black overflow-hidden relative">
+        <section id="gallery" className="py-24 bg-black overflow-hidden relative">
             <div className="container mx-auto px-4 mb-12">
                 <h2 className="text-3xl font-display font-bold text-white text-center">
                     Visual <span className="text-white/50">Diaries</span>

@@ -36,10 +36,19 @@ export function HeroSection() {
                         Experience premium eyewear designed for the digital age. Lightweight, durable, and unmistakably stylish.
                     </p>
                     <div className="flex flex-col gap-4 sm:flex-row">
-                        <Button size="lg" className="rounded-full bg-white px-8 text-black hover:bg-white/90">
+                        <Button 
+                            size="lg" 
+                            className="rounded-full bg-white px-8 text-black hover:bg-white/90"
+                            onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
+                        >
                             Shop Collection
                         </Button>
-                        <Button variant="outline" size="lg" className="rounded-full border-white/20 bg-white/5 text-white hover:bg-white/10 backdrop-blur-sm">
+                        <Button 
+                            variant="outline" 
+                            size="lg" 
+                            className="rounded-full border-white/20 bg-white/5 text-white hover:bg-white/10 backdrop-blur-sm"
+                            onClick={() => document.getElementById('gallery')?.scrollIntoView({ behavior: 'smooth' })}
+                        >
                             View Lookbook
                         </Button>
                     </div>
